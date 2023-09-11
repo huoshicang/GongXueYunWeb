@@ -114,11 +114,9 @@ const LogFrom = reactive({
 const formLogin = ref(null)
 const LoginFun = () => {
   pinia.handleStart()
-  let run = true
-  formLogin.value?.validate((errors) => {
-    run = !errors;
-  })
-  if (run) {
+  if (formLogin.value?.validate((errors) => {
+    return !errors;
+  })) {
     Login(LogFrom.login)
       .then((res) => {
         if (res.code === 200) {
@@ -133,12 +131,12 @@ const LoginFun = () => {
             router.push({path: "/"})
           }
         } else {
-          Message.error(res.message)
+          pinia.FailureNotification(res.message)
           pinia.handleError()
         }
       })
       .catch(() => {
-        Message.error("网络连接失败")
+        pinia.TimeOutNotification()
       })
   }
 }
@@ -151,15 +149,13 @@ const LogupFun = () => {
     return false
   }
   
-  let run = true
-  formLogup.value?.validate((errors) => {
-    run = !errors;
-  })
-  if (run) {
+  if (formLogup.value?.validate((errors) => {
+    return  !errors;
+  })) {
     Logup(LogFrom.logup)
       .then((res) => {
         if (res.code === 200) {
-          Message.success("注册成功，请填写签到信息")
+          pinia.SuccessNotification(res.message)
           router.push({
             path: "/info",
             query: {
@@ -169,11 +165,11 @@ const LogupFun = () => {
             }
           })
         } else {
-          Message.error(res.message)
+          pinia.FailureNotification(res.message)
         }
       })
       .catch(() => {
-        Message.error("网络连接失败")
+        pinia.TimeOutNotification()
       })
   }
 }
