@@ -57,7 +57,10 @@
 </template>
 <script setup>
 import {onBeforeMount, reactive, ref} from "vue";
+import {Message} from '@arco-design/web-vue';
 import {useLoadingBar} from "naive-ui";
+import {Login, Logup} from "@/request/api";
+import router from "@/router";
 import {useCounterStore} from '@/pinia'
 
 const pinia = useCounterStore()
@@ -109,11 +112,71 @@ const LogFrom = reactive({
 
 // 登录
 const formLogin = ref(null)
-const LoginFun = () => {}
+const LoginFun = () => {
+  pinia.handleStart()
+  let run = true
+  formLogin.value?.validate((errors) => {
+    run = !errors;
+  })
+  if (run) {
+    Login(LogFrom.login)
+      .then((res) => {
+        if (res.code === 200) {
+          pinia.handleFinish()
+          if (res.data.gxy_info === 'false') {
+            router.push({
+              path: "/info",
+              query: LogFrom.login
+            })
+          } else {
+            pinia.UserData = res.data
+            router.push({path: "/"})
+          }
+        } else {
+          Message.error(res.message)
+          pinia.handleError()
+        }
+      })
+      .catch(() => {
+        Message.error("网络连接失败")
+      })
+  }
+}
 
 // 注册
 const formLogup = ref(null)
-const LogupFun = () => {}
+const LogupFun = () => {
+  if (LogFrom.logup.passWord !== LogFrom.logup.repeatPassword) {
+    Message.error("密码不一致")
+    return false
+  }
+  
+  let run = true
+  formLogup.value?.validate((errors) => {
+    run = !errors;
+  })
+  if (run) {
+    Logup(LogFrom.logup)
+      .then((res) => {
+        if (res.code === 200) {
+          Message.success("注册成功，请填写签到信息")
+          router.push({
+            path: "/info",
+            query: {
+              userName: LogFrom.logup.userName,
+              phone: LogFrom.logup.phone,
+              passWord: LogFrom.logup.passWord
+            }
+          })
+        } else {
+          Message.error(res.message)
+        }
+      })
+      .catch(() => {
+        Message.error("网络连接失败")
+      })
+  }
+}
 
 // 表单校验规则
 const LogRules = {
