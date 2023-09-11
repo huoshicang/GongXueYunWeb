@@ -7,6 +7,22 @@ const routes = [
     components: {
       App: () => import(/* webpackChunkName: "index" */ '@/views/IndexView.vue')
     },
+    children: [
+      {
+        path: 'User',
+        name: '用户管理',
+        components: {
+          Cont: () => import(/* webpackChunkName: "index" */ '@/page/UserPage.vue'),
+        }
+      },
+      {
+        path: 'CheckInUser',
+        name: '签到用户',
+        components: {
+          Cont: () => import(/* webpackChunkName: "index" */ '@/page/CheckInUserPage.vue'),
+        }
+      },
+    ]
   },
   {
     path: '/login',
@@ -15,6 +31,15 @@ const routes = [
       App: () => import(/* webpackChunkName: "login" */ '@/views/LoginView.vue')
     }
   },
+  {
+    path: '/info',
+    name: '信息',
+    components: {
+      App: () => import(/* webpackChunkName: "info" */ '@/views/InfoView.vue')
+    },
+    props: true
+  }
+
 ]
 
 const router = createRouter({

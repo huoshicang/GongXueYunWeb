@@ -19,3 +19,18 @@ export const AddInfo = async (data) => {
 export const UpLog = async (data) => {
   return await MyGet(`/user/UpLog?username=${data}`);
 }
+
+// 删除用户
+export const Del = async (data) => {
+  return await MyPost(`/user/del`, data);
+}
+
+// 获取用户
+export const CheckInfo = async (data) => {
+  return await MyGet(`/user/CheckInfo?username=${data}`);
+}
+
+// 获取签到人员
+export const GetInfo = async (data) => {
+  return await MyPost(`/user/info`, data);
+}
