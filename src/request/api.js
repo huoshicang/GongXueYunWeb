@@ -35,6 +35,12 @@ export const reset = async (data) => {
   return await MyPost(`/user/reset`, data);
 }
 
+// 修改密码
+export const change = async (data) => {
+  return await MyPost(`/user/change`, data);
+}
+
+
 // 获取用户
 export const CheckInfo = async (data) => {
   return await MyGet(`/user/CheckInfo?username=${data}`);

@@ -121,6 +121,13 @@ const LoginFun = () => {
       .then((res) => {
         if (res.code === 200) {
           pinia.handleFinish()
+          if (LogFrom.login.passWord === '123456'){
+            router.push({
+              path: "/reset",
+              query: res.data
+            })
+            return
+          }
           if (res.data.gxy_info === 'false') {
             router.push({
               path: "/info",

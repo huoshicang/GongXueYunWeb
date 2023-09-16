@@ -25,11 +25,14 @@
     </a-form>
     
     <!--表格-->
-    <a-table :data="data">
+    <a-table :data="pageData" :pagination="false" :scroll="{
+      x: 'auto',
+      y: 'auto',
+    }">
       <template #columns>
         <a-table-column align="center" width="100" title="用户ID" data-index="id"/>
-        <a-table-column align="center" width="200" title="用户姓名" data-index="username"/>
-        <a-table-column align="center" width="200" title="手机号" data-index="phone"/>
+        <a-table-column align="center" width="150" title="用户姓名" data-index="username"/>
+        <a-table-column align="center" width="150" title="手机号" data-index="phone"/>
         <a-table-column align="center" width="300" title="最新登录时间" data-index="update_time"/>
         <a-table-column align="center" width="150" title="是否有签到信息">
           <template #cell="{ record }">
@@ -67,6 +70,14 @@
       </template>
     </a-table>
     
+    <!--分页-->
+    <PaginationComponents
+      :total="data.length"
+      :currentPage="currentPage"
+      :pageSize="pageSize"
+      @update:currentPage="handlePageChange"
+      @update:pageSize="handleSizeChange"/>
+    
     <!--修改信息弹窗-->
     <a-modal v-model:visible="ModifyFlag" @ok="ModifyFun" title="修改用户信息" @cancel="OffModify">
       <a-form :model="ModifyForm" ref="FormModify" :rules="Rules">
@@ -81,15 +92,17 @@
   </div>
 </template>
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref} from "vue";
 import {Del, GetInfo, modify, reset} from "@/request/api";
 import {useCounterStore} from '@/pinia'
 import {Message} from "@arco-design/web-vue";
+import PaginationComponents from "@/components/PaginationComponents.vue";
 
 const pinia = useCounterStore()
 
 const data = ref([]); // 表格数据
 const usernameList = ref([]) //名称搜索
+
 
 // 搜索表单
 const Search = reactive({
@@ -121,6 +134,26 @@ const GetData = () => {
     })
 }
 
+// 分页
+const currentPage = ref(1);
+const pageSize = ref(15);
+
+const pageData = computed(() => {
+  const startIndex = (currentPage.value - 1) * pageSize.value;
+  const endIndex = startIndex + pageSize.value;
+  return data.value.slice(startIndex, endIndex);
+});
+
+// 处理切换页码
+const handlePageChange = (newPage) => {
+  currentPage.value = newPage;
+};
+
+// 处理切换每页大小
+const handleSizeChange = (newSize) => {
+  pageSize.value = newSize;
+};
+
 // 删除
 const del = (record) => {
   Del({
@@ -143,14 +176,14 @@ const del = (record) => {
 
 /* 表单 */
 const ModifyFlag = ref(false) // 弹窗开关
-// 修的表单
+// 编辑表单
 const ModifyForm = reactive({
   id: "",
   username: "",
   phone: ""
 })
 
-//表单验证
+//编辑表单验证
 const Rules = {
   username: {
     required: true,
@@ -179,7 +212,7 @@ const ModifyInfo = (record) => {
   ModifyFlag.value = true
 }
 
-// 确定按钮
+// 编辑确定按钮
 const FormModify = ref(null)
 const ModifyFun = () => {
   if (FormModify.value?.validate((errors) => {
@@ -200,19 +233,19 @@ const ModifyFun = () => {
   }
 }
 
-// 关闭
+// 编辑关闭
 const OffModify = () => {
   ModifyForm.id = ""
   ModifyForm.username = ""
   ModifyForm.phone = ""
 }
 
+// 重置密码
 const ResetPassword = (record) => {
   pinia.WarningNotification({
     id: 'ResetPassword',
     title: '修改密码',
-    content: `密码将会重置为：123456 \n
-请尽快登录修改密码`,
+    content: `密码将会重置为：123456 请尽快登录修改密码`,
     duration: 2000,
   })
   
@@ -251,5 +284,7 @@ onMounted(() => {
 
 </script>
 <style scoped>
-
+#user{
+  padding-top: 5px;
+}
 </style>

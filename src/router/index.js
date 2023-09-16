@@ -38,8 +38,15 @@ const routes = [
       App: () => import(/* webpackChunkName: "info" */ '@/views/InfoView.vue')
     },
     props: true
+  },
+  {
+    path: '/reset',
+    name: '重置密码',
+    components: {
+      App: () => import(/* webpackChunkName: "info" */ '@/views/ResetView.vue')
+    },
+    props: true
   }
-
 ]
 
 const router = createRouter({

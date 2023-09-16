@@ -1,14 +1,5 @@
 <template>
-  
-  <a-layout-sider breakpoint="xl">
-    
-    <div class="logo">
-      <n-h1>
-        <n-text>
-          写啥好呀
-        </n-text>
-      </n-h1>
-    </div>
+  <a-layout-sider>
     <a-menu
       :default-open-keys="['1']"
       :default-selected-keys="['0_3']"

@@ -128,7 +128,7 @@ const current = (key) => {
   curren.value = key
 }
 
-// 表达信息
+// 表单信息
 const info = reactive({
   enable: "true", // 是否开启签到
   name: "", // 姓名
@@ -291,10 +291,12 @@ const again = () => {
   curren.value = 1
 }
 
+const query = useRoute()
+
 onMounted(() => {
-  info.name = useRoute().query.userName
-  info.phone = useRoute().query.phone
-  info.password = useRoute().query.passWord
+  info.name = query.userName
+  info.phone = query.phone
+  info.password = query.passWord
 })
 </script>
 <style scoped lang="less">

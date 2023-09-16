@@ -9,6 +9,7 @@ import piniaPlug from "pinia-plugin-persistedstate";
 pinia.use(piniaPlug);
 
 import ArcoVue from '@arco-design/web-vue';
+import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import '@arco-design/web-vue/dist/arco.css';
 
 import naive from "naive-ui";
@@ -24,7 +25,7 @@ axios.defaults.baseURL = process.env.VUE_APP_BASEURL
 app.use(pinia)
     .use(router)
     .use(ArcoVue)
+    .use(ArcoVueIcon)
     .use(naive)
-
     .use(less)
     .mount('#app')

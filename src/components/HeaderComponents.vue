@@ -1,5 +1,5 @@
 <template>
-  <a-layout-header style="padding-left: 20px;">
+  <a-layout-header id="header">
     Header
   </a-layout-header >
 </template>
@@ -7,6 +7,5 @@
 
 </script>
 
-<style scoped lang="">
-
+<style scoped>
 </style>
