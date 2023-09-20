@@ -20,9 +20,14 @@ export const UpLog = async (data) => {
   return await MyGet(`/user/UpLog?username=${data}`);
 }
 
+// 获取签到
+export const GetInfo = async (data) => {
+  return await MyPost(`/user/info`, data);
+}
+
 // 删除用户
 export const Del = async (data) => {
-  return await MyPost(`/user/del`, data);
+  return await MyPost(`/user/delSys`, data);
 }
 
 // 修改用户
@@ -41,12 +46,19 @@ export const change = async (data) => {
 }
 
 
-// 获取用户
+// 获取签到用户
 export const CheckInfo = async (data) => {
-  return await MyGet(`/user/CheckInfo?username=${data}`);
+  return await MyPost(`/user/CheckInfo`, data);
 }
 
-// 获取签到人员
-export const GetInfo = async (data) => {
-  return await MyPost(`/user/info`, data);
+// 编辑签到用户
+export const ModifyInfo = async (data) => {
+  return await MyPost(`/user/ModifyInfo`,data);
 }
+
+// 删除签到用户
+export const delCheck = async (data) => {
+  return await MyPost(`/user/delCheck`, data);
+}
+
+

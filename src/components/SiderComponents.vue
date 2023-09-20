@@ -47,6 +47,45 @@ const options = [
     ),
     key: "签到用户",
   },
+  {
+    show: pinia.UserData.role === 'user' || pinia.UserData.role === 'admin',
+    label: () => h(
+      RouterLink,
+      {
+        to: {
+          path: "/CheckInUser",
+        }
+      },
+      { default: () => "周报" }
+    ),
+    key: "周报",
+  },
+  {
+    show: pinia.UserData.role === 'user' || pinia.UserData.role === 'admin',
+    label: () => h(
+      RouterLink,
+      {
+        to: {
+          path: "/CheckInUser",
+        }
+      },
+      { default: () => "月报" }
+    ),
+    key: "月报",
+  },
+  {
+    show: pinia.UserData.role === 'user' || pinia.UserData.role === 'admin',
+    label: () => h(
+      RouterLink,
+      {
+        to: {
+          path: "/CheckInUser",
+        }
+      },
+      { default: () => "定时任务" }
+    ),
+    key: "定时任务",
+  },
 ]
 
 const showOption = (key) => {

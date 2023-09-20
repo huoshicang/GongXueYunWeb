@@ -2,7 +2,6 @@
   <div id="login">
     <a-typography-title>
       欢迎{{ title }}
-    
     </a-typography-title>
     <n-card class="card">
       <a-alert v-if="title === '注册'" type="warning">建议注册的账号密码和工学云相同</a-alert>
@@ -18,16 +17,24 @@
           <n-form ref="formLogin"
                   :rules="LogRules"
                   :model="LogFrom">
-            <n-form-item-row label="用户名" path="login.userName">
+            <n-form-item label="用户名" path="login.userName">
               <n-input type="text" v-model:value="LogFrom.login.userName" placeholder="请输入用户名"/>
-            </n-form-item-row>
-            <n-form-item-row label="密码" path="login.passWord">
-              <n-input type="password" show-password-on="click" v-model:value="LogFrom.login.passWord" placeholder="请输入密码"/>
-            </n-form-item-row>
+            </n-form-item>
+            <n-form-item label="密码" path="login.passWord">
+              <n-input type="password" show-password-on="click" v-model:value="LogFrom.login.passWord"
+                       placeholder="请输入密码"/>
+            </n-form-item>
           </n-form>
-          <n-button type="primary" @click="LoginFun" block secondary strong>
-            登录
-          </n-button>
+          <n-space vertical>
+            <n-button type="primary" @click="LoginFun" block secondary strong>
+              登录
+            </n-button>
+            <router-link to="/reset">
+              <n-button type="primary" block secondary strong>
+                重置密码
+              </n-button>
+            </router-link>
+          </n-space>
         </n-tab-pane>
         <n-tab-pane name="signup" tab="注册">
           <n-form ref="formLogup"
@@ -40,12 +47,13 @@
               <n-input type="text" v-model:value="LogFrom.logup.phone" placeholder="请输入手机号码"/>
             </n-form-item-row>
             <n-form-item-row label="密码" path="logup.passWord">
-              <n-input type="password" show-password-on="click" v-model:value="LogFrom.logup.passWord" placeholder="请输入密码"/>
+              <n-input type="password" show-password-on="click" v-model:value="LogFrom.logup.passWord"
+                       placeholder="请输入密码"/>
             </n-form-item-row>
             <n-form-item-row label="重复密码" path="logup.repeatPassword">
-              <n-input type="password" show-password-on="click" v-model:value="LogFrom.logup.repeatPassword" placeholder="请重复密码"/>
+              <n-input type="password" show-password-on="click" v-model:value="LogFrom.logup.repeatPassword"
+                       placeholder="请重复密码"/>
             </n-form-item-row>
-          
           </n-form>
           <n-button type="primary" block secondary strong @click="LogupFun">
             注册
@@ -57,7 +65,6 @@
 </template>
 <script setup>
 import {onBeforeMount, reactive, ref} from "vue";
-import {Message} from '@arco-design/web-vue';
 import {useLoadingBar} from "naive-ui";
 import {Login, Logup} from "@/request/api";
 import router from "@/router";
@@ -113,72 +120,73 @@ const LogFrom = reactive({
 // 登录
 const formLogin = ref(null)
 const LoginFun = () => {
-  pinia.handleStart()
-  if (formLogin.value?.validate((errors) => {
-    return !errors;
-  })) {
-    Login(LogFrom.login)
-      .then((res) => {
-        if (res.code === 200) {
-          pinia.handleFinish()
-          if (LogFrom.login.passWord === '123456'){
-            router.push({
-              path: "/reset",
-              query: res.data
-            })
-            return
-          }
-          if (res.data.gxy_info === 'false') {
-            router.push({
-              path: "/info",
-              query: LogFrom.login
-            })
+  formLogin.value?.validate((errors) => {
+    console.log(errors)
+    if (!errors) {
+      pinia.handleStart()
+      Login(LogFrom.login)
+        .then((res) => {
+          if (res.code === 200) {
+            pinia.handleFinish()
+            if (LogFrom.login.passWord === '123456') {
+              router.push({
+                path: "/reset",
+                query: res.data
+              })
+              return
+            }
+            if (res.data.gxy_info === 'false') {
+              router.push({
+                path: "/info",
+                query: LogFrom.login
+              })
+            } else {
+              pinia.UserData = res.data
+              router.push({path: "/"})
+            }
           } else {
-            pinia.UserData = res.data
-            router.push({path: "/"})
+            pinia.FailureNotification(res.message)
+            pinia.handleError()
           }
-        } else {
-          pinia.FailureNotification(res.message)
-          pinia.handleError()
-        }
-      })
-      .catch(() => {
-        pinia.TimeOutNotification()
-      })
-  }
+        })
+        .catch(() => {
+          pinia.TimeOutNotification()
+        })
+    }
+  })
 }
+
 
 // 注册
 const formLogup = ref(null)
 const LogupFun = () => {
-  if (LogFrom.logup.passWord !== LogFrom.logup.repeatPassword) {
-    Message.error("密码不一致")
-    return false
-  }
-  
-  if (formLogup.value?.validate((errors) => {
-    return  !errors;
-  })) {
-    Logup(LogFrom.logup)
-      .then((res) => {
-        if (res.code === 200) {
-          pinia.SuccessNotification(res.message)
-          router.push({
-            path: "/info",
-            query: {
-              userName: LogFrom.logup.userName,
-              phone: LogFrom.logup.phone,
-              passWord: LogFrom.logup.passWord
-            }
-          })
-        } else {
-          pinia.FailureNotification(res.message)
-        }
-      })
-      .catch(() => {
-        pinia.TimeOutNotification()
-      })
-  }
+  formLogup.value?.validate((errors) => {
+    if (!errors) {
+      if (LogFrom.logup.passWord !== LogFrom.logup.repeatPassword) {
+        pinia.FailureNotification("密码不一致")
+        return false
+      }
+      Logup(LogFrom.logup)
+        .then((res) => {
+          if (res.code === 200) {
+            pinia.SuccessNotification(res.message)
+            router.push({
+              path: "/info",
+              query: {
+                userName: LogFrom.logup.userName,
+                phone: LogFrom.logup.phone,
+                passWord: LogFrom.logup.passWord
+              }
+            })
+          } else {
+            pinia.FailureNotification(res.message)
+          }
+        })
+        .catch(() => {
+          pinia.TimeOutNotification()
+        })
+    }
+  })
 }
 
 // 表单校验规则

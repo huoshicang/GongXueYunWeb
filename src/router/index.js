@@ -12,14 +12,14 @@ const routes = [
         path: 'User',
         name: '用户管理',
         components: {
-          Cont: () => import(/* webpackChunkName: "index" */ '@/page/UserPage.vue'),
+          Cont: () => import(/* webpackChunkName: "index" */ '@/page/User/UserPage.vue'),
         }
       },
       {
         path: 'CheckInUser',
         name: '签到用户',
         components: {
-          Cont: () => import(/* webpackChunkName: "index" */ '@/page/CheckInUserPage.vue'),
+          Cont: () => import(/* webpackChunkName: "index" */ '@/page/Check/CheckInUserPage.vue'),
         }
       },
     ]

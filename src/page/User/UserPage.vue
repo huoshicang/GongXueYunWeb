@@ -1,34 +1,9 @@
 <template>
   <div id="user">
-    
-    <!--搜索-->
-    <a-form :model="Search" layout="inline">
-      <a-space>
-        <a-form-item field="username" label="姓名">
-          <a-select allow-clear :style="{width:'150px'}" v-model="Search.username" allow-search>
-            <a-option v-for="(item, index) in usernameList"
-                      :value="item"
-                      :key="index">{{ item }}
-            </a-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item field="gxy_info" label="是否有签到信息">
-          <a-select v-model="Search.gxy_info" :style="{width:'100px'}" allow-clear>
-            <a-option value="false">无</a-option>
-            <a-option value="true">有</a-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item>
-          <a-button @click="GetData">搜索</a-button>
-        </a-form-item>
-      </a-space>
-    </a-form>
-    
+    <From :usernameList="usernameList" :phoneList="phoneList" @get:Data="GetData"/>
+    <n-divider />
     <!--表格-->
-    <a-table :data="pageData" :pagination="false" :scroll="{
-      x: 'auto',
-      y: 'auto',
-    }">
+    <a-table :data="pageData" :pagination="false" :scroll="{x: 'auto',y: 'auto',}">
       <template #columns>
         <a-table-column align="center" width="100" title="用户ID" data-index="id"/>
         <a-table-column align="center" width="150" title="用户姓名" data-index="username"/>
@@ -39,7 +14,7 @@
             <n-tag type="success" v-if="record.gxy_info === 'true'">
               有
             </n-tag>
-            <n-tag type="error" v-else-if="record.gxy_info === 'fasle'">
+            <n-tag type="error" v-else-if="record.gxy_info === 'false'">
               无
             </n-tag>
           </template>
@@ -54,14 +29,14 @@
             </n-tag>
           </template>
         </a-table-column>
-        <a-table-column fixed="right" width="150" align="center" title="操作">
+        <a-table-column fixed="right" width="270" align="center" title="操作">
           <template #cell="{ record }">
             <a-space>
               <a-button @click="ModifyInfo(record)">编辑</a-button>
-              <a-popconfirm content="确定要删除吗" type="warning" @ok="del(record)">
+              <a-popconfirm content="确定要删除吗？如果有签到信息会一起删除" type="warning" @ok="del(record)">
                 <a-button>删除</a-button>
               </a-popconfirm>
-              <a-popconfirm content="确定要重置密码" type="warning" @ok="ResetPassword(record)">
+              <a-popconfirm content="确定要重置密码？" type="warning" @ok="ResetPassword(record)">
                 <a-button>重置密码</a-button>
               </a-popconfirm>
             </a-space>
@@ -97,31 +72,33 @@ import {Del, GetInfo, modify, reset} from "@/request/api";
 import {useCounterStore} from '@/pinia'
 import {Message} from "@arco-design/web-vue";
 import PaginationComponents from "@/components/PaginationComponents.vue";
+import From from "@/page/User/FromComponents.vue";
 
 const pinia = useCounterStore()
 
 const data = ref([]); // 表格数据
 const usernameList = ref([]) //名称搜索
+const phoneList = ref([]);
 
-
-// 搜索表单
-const Search = reactive({
-  "name": pinia.UserData.username,
-  "username": "",
-  "gxy_info": ""
-})
 
 // 请求数据
-const GetData = () => {
+const GetData = (Search) => {
   pinia.handleStart()
   GetInfo(Search)
     .then((res) => {
       if (res.code === 200) {
         data.value = res.data
         usernameList.value = []
-        res.data.forEach((item) => {
-          usernameList.value.push(item.username)
-        })
+        
+        if (usernameList.value.length === 0 && phoneList.value.length === 0){
+          usernameList.value = []
+          phoneList.value = []
+          res.data.forEach((item) => {
+            usernameList.value.push(item.name)
+            phoneList.value.push(item.phone)
+          })
+        }
+        
         pinia.handleFinish()
       } else {
         pinia.FailureNotification(res.message)
@@ -278,7 +255,12 @@ const ResetPassword = (record) => {
 
 
 onMounted(() => {
-  GetData()
+  GetData({
+    "name": pinia.UserData.username,
+    "username": "",
+    "phone": "",
+    "gxy_info": ""
+  })
 })
 
 
