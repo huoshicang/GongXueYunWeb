@@ -238,7 +238,7 @@ const submin = () => {
       } else {
         status.value = 'error'
         pinia.handleError()
-        Message.error(res.message)
+        pinia.FailureNotification(res.message)
         if (res.message === "用户已存在") {
           router.push({
             path: "/login"
@@ -248,7 +248,7 @@ const submin = () => {
     })
     .catch(() => {
       status.value = 'error'
-      Message.error("网络连接失败")
+      pinia.TimeOutNotification()
       pinia.handleError()
     })
 }

@@ -1,15 +1,15 @@
 <template>
   <div id="user">
     <From :usernameList="usernameList" :phoneList="phoneList" @get:Data="GetData"/>
-    <n-divider />
+    <n-divider/>
     <!--表格-->
     <a-table :data="pageData" :pagination="false" :scroll="{x: 'auto',y: 'auto',}">
       <template #columns>
-        <a-table-column align="center" width="100" title="用户ID" data-index="id"/>
-        <a-table-column align="center" width="150" title="用户姓名" data-index="username"/>
-        <a-table-column align="center" width="150" title="手机号" data-index="phone"/>
-        <a-table-column align="center" width="300" title="最新登录时间" data-index="update_time"/>
-        <a-table-column align="center" width="150" title="是否有签到信息">
+        <a-table-column align="center" :width="100" title="用户ID" data-index="id"/>
+        <a-table-column align="center" :width="130" title="用户姓名" data-index="username"/>
+        <a-table-column align="center" :width="120" title="手机号" data-index="phone"/>
+        <a-table-column align="center" :width="290" title="最新登录时间" data-index="update_time"/>
+        <a-table-column align="center" fixed="right" :width="100" title="是否有签到信息">
           <template #cell="{ record }">
             <n-tag type="success" v-if="record.gxy_info === 'true'">
               有
@@ -19,7 +19,7 @@
             </n-tag>
           </template>
         </a-table-column>
-        <a-table-column align="center" title="角色">
+        <a-table-column align="center" fixed="right" :width="150" title="角色">
           <template #cell="{ record }">
             <n-tag type="info" v-if="record.role === 'admin'">
               管理员
@@ -29,7 +29,7 @@
             </n-tag>
           </template>
         </a-table-column>
-        <a-table-column fixed="right" width="270" align="center" title="操作">
+        <a-table-column fixed="right" :width="270" align="center" title="操作">
           <template #cell="{ record }">
             <a-space>
               <a-button @click="ModifyInfo(record)">编辑</a-button>
@@ -70,15 +70,22 @@
 import {computed, onMounted, reactive, ref} from "vue";
 import {Del, GetInfo, modify, reset} from "@/request/api";
 import {useCounterStore} from '@/pinia'
-import {Message} from "@arco-design/web-vue";
 import PaginationComponents from "@/components/PaginationComponents.vue";
 import From from "@/page/User/FromComponents.vue";
 
 const pinia = useCounterStore()
 
+const InitSearch = {
+  "name": pinia.UserData.username,
+  "username": "",
+  "phone": "",
+  "gxy_info": ""
+}
+
 const data = ref([]); // 表格数据
 const usernameList = ref([]) //名称搜索
 const phoneList = ref([]);
+
 
 
 // 请求数据
@@ -90,11 +97,11 @@ const GetData = (Search) => {
         data.value = res.data
         usernameList.value = []
         
-        if (usernameList.value.length === 0 && phoneList.value.length === 0){
+        if (usernameList.value.length === 0 || phoneList.value.length === 0) {
           usernameList.value = []
           phoneList.value = []
           res.data.forEach((item) => {
-            usernameList.value.push(item.name)
+            usernameList.value.push(item.username)
             phoneList.value.push(item.phone)
           })
         }
@@ -106,7 +113,7 @@ const GetData = (Search) => {
       }
     })
     .catch(() => {
-      Message.error("网络连接超时")
+      pinia.TimeOutNotification()
       pinia.TimeOutNotification()
     })
 }
@@ -139,7 +146,7 @@ const del = (record) => {
   }).then((res) => {
     if (res.code === 200) {
       pinia.SuccessNotification("删除成功")
-      GetData()
+      GetData(InitSearch)
     } else {
       pinia.FailureNotification(res.message)
       pinia.handleError()
@@ -147,6 +154,7 @@ const del = (record) => {
   })
     .catch(() => {
       pinia.TimeOutNotification()
+      pinia.handleError()
     })
 }
 
@@ -199,7 +207,7 @@ const ModifyFun = () => {
       .then((res) => {
         if (res.code === 200) {
           pinia.SuccessNotification(res.message)
-          GetData()
+          GetData(InitSearch)
         } else {
           pinia.FailureNotification(res.message)
         }
@@ -238,7 +246,6 @@ const ResetPassword = (record) => {
           content: '密码重置完成',
           duration: 2000,
         })
-        GetData()
       } else {
         pinia.SuccessNotification({
           id: 'ResetPassword',
@@ -255,18 +262,13 @@ const ResetPassword = (record) => {
 
 
 onMounted(() => {
-  GetData({
-    "name": pinia.UserData.username,
-    "username": "",
-    "phone": "",
-    "gxy_info": ""
-  })
+  GetData(InitSearch)
 })
 
 
 </script>
 <style scoped>
-#user{
+#user {
   padding-top: 5px;
 }
 </style>

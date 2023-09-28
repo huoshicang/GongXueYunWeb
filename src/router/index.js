@@ -22,6 +22,27 @@ const routes = [
           Cont: () => import(/* webpackChunkName: "index" */ '@/page/Check/CheckInUserPage.vue'),
         }
       },
+      {
+        path: 'Weekly',
+        name: '周报',
+        components: {
+          Cont: () => import(/* webpackChunkName: "index" */ '@/page/Weekly/WeeklyPage.vue'),
+        }
+      },
+      {
+        path: 'Month',
+        name: '月报',
+        components: {
+          Cont: () => import(/* webpackChunkName: "index" */ '@/page/Month/MonthPage.vue'),
+        }
+      },
+      {
+        path: 'Quest',
+        name: '任务',
+        components: {
+          Cont: () => import(/* webpackChunkName: "index" */ '@/page/Quest/QuestPage.vue'),
+        }
+      },
     ]
   },
   {

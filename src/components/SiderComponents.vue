@@ -53,7 +53,7 @@ const options = [
       RouterLink,
       {
         to: {
-          path: "/CheckInUser",
+          path: "/Weekly",
         }
       },
       { default: () => "周报" }
@@ -66,26 +66,26 @@ const options = [
       RouterLink,
       {
         to: {
-          path: "/CheckInUser",
+          path: "/Month",
         }
       },
       { default: () => "月报" }
     ),
     key: "月报",
   },
-  {
-    show: pinia.UserData.role === 'user' || pinia.UserData.role === 'admin',
-    label: () => h(
-      RouterLink,
-      {
-        to: {
-          path: "/CheckInUser",
-        }
-      },
-      { default: () => "定时任务" }
-    ),
-    key: "定时任务",
-  },
+  // {
+  //   show: pinia.UserData.role === 'user' || pinia.UserData.role === 'admin',
+  //   label: () => h(
+  //     RouterLink,
+  //     {
+  //       to: {
+  //         path: "/Quest",
+  //       }
+  //     },
+  //     { default: () => "定时任务" }
+  //   ),
+  //   key: "定时任务",
+  // },
 ]
 
 const showOption = (key) => {

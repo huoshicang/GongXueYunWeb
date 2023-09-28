@@ -10,23 +10,23 @@
           </a-option>
         </a-select>
       </a-form-item>
-      <a-form-item field="username" label="手机号">
-        <a-select allow-clear :style="{width:'170px'}" v-model="Search.phone" allow-search>
-          <a-option v-for="(item, index) in props.phoneList"
-                    :value="item"
-                    :key="index">{{ item }}
-          </a-option>
-        </a-select>
+      <a-form-item field="username" label="开始时间">
+        <a-date-picker
+          v-model="Search.starttime"
+          show-time
+          format="YYYY-MM-DD HH:mm:ss"/>
       </a-form-item>
-      <a-form-item field="gxy_info" label="是否有签到信息">
-        <a-select v-model="Search.gxy_info" :style="{width:'100px'}" allow-clear>
-          <a-option value="false">无</a-option>
-          <a-option value="true">有</a-option>
-        </a-select>
+      <a-form-item field="gxy_info" label="结束时间">
+        <a-date-picker
+          v-model="Search.endtime"
+          show-time
+          format="YYYY-MM-DD HH:mm:ss"/>
       </a-form-item>
       <a-form-item>
-        <a-button @click="GetData">搜索</a-button>
-        
+        <a-space>
+          <a-button @click="GetData">搜索</a-button>
+          <a-button @click="AddInfo">新增</a-button>
+        </a-space>
       </a-form-item>
     </a-space>
   </a-form>
@@ -36,13 +36,13 @@ import {useCounterStore} from '@/pinia'
 import {defineProps, reactive} from "vue";
 
 const pinia = useCounterStore()
-const props = defineProps(['usernameList', 'phoneList']);
+const props = defineProps(['usernameList']);
 
 const Search = reactive({
-  "name": pinia.UserData.username,
   "username": "",
-  "phone": "",
-  "gxy_info": ""
+  "name": pinia.UserData.username,
+  "starttime": "",
+  "endtime": "",
 })
 
 const emit = defineEmits();
@@ -51,7 +51,11 @@ const GetData = () => {
   emit('get:Data', Search);
 };
 
+const flag = true
 
+const AddInfo = () => {
+  emit('add:AddInfo', flag);
+};
 
 </script>
 

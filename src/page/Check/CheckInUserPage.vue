@@ -12,13 +12,14 @@
         <a-table-column align="center" :width="100" title="省份" data-index="province"/>
         <a-table-column align="center" :width="120" title="城市" data-index="city"/>
         <a-table-column align="center" :width="150" title="区/县" data-index="area"/>
-        <a-table-column align="center" :width="400" title="详细地址" data-index="address"/>
+        <a-table-column align="center" :width="350" title="详细地址" data-index="address"/>
         <a-table-column align="center" :width="110" title="经度" data-index="longitude"/>
         <a-table-column align="center" :width="110" title="纬度" data-index="latitude"/>
         <a-table-column align="center" :width="120" title="签到备注" ellipsis tooltip data-index="note"/>
         <a-table-column align="center" :width="100" title="签到设备类型" data-index="type"/>
+        <a-table-column align="center" :width="200" title="签到时间" ellipsis tooltip data-index="check_time"/>
         <a-table-column align="center" :width="130" title="推送token" ellipsis tooltip data-index="pushKey"/>
-        <a-table-column align="center" :width="100" title="是否开启签到">
+        <a-table-column align="center" fixed="right" :width="100" title="是否开启签到">
           <template #cell="{ record }">
             <n-tag type="success" v-if="record.enable">
               开启
@@ -52,7 +53,7 @@
     <!--修改信息-->
     <a-modal v-model:visible="visible" @ok="handleOk" @cancel="handleCancel" fullscreen>
       <template #title>
-        Title
+        编辑信息
       </template>
       <a-row class="grid-demo">
         <a-col :span="4">
@@ -64,7 +65,7 @@
         </a-col>
         <a-col :span="4">
           <div>
-            <a-switch v-model="info.enable" :checked-value="true" :unchecked-value="false"/>
+            <a-switch v-model="info.enable" checked-value="true" unchecked-value="false"/>
           </div>
         </a-col>
         <a-col :span="4">
@@ -88,7 +89,7 @@
         </a-col>
         <a-col :span="4">
           <div>
-            <a-input v-model="info.phone" size="large" allow-clear/>
+            <a-input v-model="info.phone" size="large" allow-clear />
           </div>
         </a-col>
         <a-col :span="4">
@@ -100,7 +101,7 @@
         </a-col>
         <a-col :span="4">
           <div>
-            <a-input v-model="info.password" size="large" allow-clear/>
+            <a-input v-model="info.password" size="large" allow-clear placeholder="填写了密码，将会修改密码"/>
           </div>
         </a-col>
       </a-row>
@@ -227,6 +228,21 @@
         <a-col :span="4">
           <div>
             <a-typography-title :heading="6">
+              签到时间
+            </a-typography-title>
+          </div>
+        </a-col>
+        <a-col :span="4">
+          <div>
+            <a-date-picker
+              v-model="info.check_time"
+              show-time
+              format="YYYY-MM-DD HH:mm:ss"/>
+          </div>
+        </a-col>
+        <a-col :span="4">
+          <div>
+            <a-typography-title :heading="6">
               推送
             </a-typography-title>
           </div>
@@ -237,20 +253,26 @@
           </div>
         </a-col>
       </a-row>
+      
     </a-modal>
-  
-  
+    
   </div>
 </template>
-<script setup>
+<script setup lang="jsx">
 import {computed, onMounted, reactive, ref, shallowRef} from "vue";
 import {CheckInfo, delCheck, ModifyInfo} from "@/request/api";
 import {useCounterStore} from '@/pinia'
 import PaginationComponents from "@/components/PaginationComponents.vue";
 import From from "@/page/Check/FromComponents.vue";
 
-
 const pinia = useCounterStore()
+
+const InitSearch = {
+  name: "",
+  phone: "",
+  role: pinia.UserData.username,
+  enable: "",
+}
 
 const data = ref([]); // 表格数据
 const usernameList = ref([]);
@@ -258,7 +280,6 @@ const phoneList = ref([]);
 
 
 const GetData = (Search) => {
-
   pinia.handleStart()
   CheckInfo(Search)
     .then((res) => {
@@ -323,6 +344,7 @@ const info = reactive({
   note: "", // 备注
   type: "android", // 设备类型
   pushKey: "", // 推送token
+  check_time:"", // 签到时间
 })
 // 对话框是否显示
 const visible = shallowRef(false)
@@ -342,6 +364,7 @@ const Modify = (record) => {
   info.note = record.note
   info.type = record.type
   info.pushKey = record.pushKey
+  info.check_time = record.check_time
   
   visible.value = true
 }
@@ -354,7 +377,7 @@ const handleOk = () => {
       if (res.code === 200) {
         pinia.SuccessNotification(res.message)
         pinia.handleStart()
-        GetData()
+        GetData(InitSearch)
       } else {
         pinia.FailureNotification(res.message)
         pinia.handleError()
@@ -382,6 +405,7 @@ const handleCancel = () => {
   info.note = ""
   info.type = ""
   info.pushKey = ""
+  info.check_time = ""
   
   visible.value = false
 }
@@ -396,7 +420,7 @@ const del = (record) => {
   }).then((res) => {
     if (res.code === 200) {
       pinia.SuccessNotification("删除成功")
-      GetData()
+      GetData(InitSearch)
     } else {
       pinia.FailureNotification(res.message)
       pinia.handleError()
@@ -408,12 +432,7 @@ const del = (record) => {
 }
 
 onMounted(() => {
-  GetData({
-    name: "",
-    phone: "",
-    role: pinia.UserData.username,
-    enable: "",
-  })
+  GetData(InitSearch)
 })
 
 </script>

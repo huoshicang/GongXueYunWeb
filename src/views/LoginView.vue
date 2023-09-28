@@ -34,6 +34,10 @@
                 重置密码
               </n-button>
             </router-link>
+            <a-button type="primary" long @click="admin">管理员登录（有30%概率出现密码错误）</a-button>
+            <a-button type="primary" long @click="users" disabled>用户登录（没写完）</a-button>
+            <a-button type="primary" long @click="reset">去重置密码的</a-button>
+            <a-button type="primary" long @click="no">没有签到信息</a-button>
           </n-space>
         </n-tab-pane>
         <n-tab-pane name="signup" tab="注册">
@@ -106,8 +110,8 @@ const update = (tabName) => {
 // 表单
 const LogFrom = reactive({
   login: {
-    userName: "管理员",
-    passWord: "123"
+    userName: "",
+    passWord: ""
   },
   logup: {
     userName: "",
@@ -227,6 +231,93 @@ const LogRules = {
   }
 }
 
+
+
+
+
+//管理员登录
+const admin = () => {
+  LogFrom.login.userName = '管理员'
+  
+  const num = Math.floor(Math.random() * (10 - 1 + 1)) + 1;
+  if (num <= 3){
+    LogFrom.login.passWord = '466'
+  }else {
+    LogFrom.login.passWord = '123'
+  }
+  
+  LoginFun()
+}
+
+//用户登录
+const users = () => {
+  LogFrom.login.userName = '管理员'
+  LogFrom.login.passWord = '123'
+  
+  setTimeout(()=>{}, 2000)
+  
+  LoginFun()
+}
+
+
+// 重置密码
+const reset = () => {
+  let list = [
+    '范俊驰',
+    '廖彬',
+    '彭鸿煊',
+    '范俊驰',
+    '史耀杰',
+    '邱博文',
+    '范俊驰',
+    '韦立果',
+    '尹烨霖',
+    '余荣轩',
+    '程君浩',
+    '郭绍齐',
+    '贾越泽',
+    '韦越彬',
+    '叶楷瑞',
+    '覃弘文',
+    '沈明杰',
+    '黄哲瀚',
+    '秦振家',
+    '杨语堂',
+  ]
+  
+  
+  LogFrom.login.userName = list[Math.floor(Math.random() * list.length)]
+  LogFrom.login.passWord = '123456'
+  
+  setTimeout(()=>{}, 2000)
+  
+  LoginFun()
+}
+
+// 没有信息
+const no = () => {
+  let list = [
+    '余荣轩',
+    '程君浩',
+    '郭绍齐',
+    '贾越泽',
+    '韦越彬',
+    '叶楷瑞',
+    '覃弘文',
+    '沈明杰',
+    '黄哲瀚',
+    '秦振家',
+    '杨语堂',
+  ]
+  
+  
+  LogFrom.login.userName = list[Math.floor(Math.random() * list.length)]
+  LogFrom.login.passWord = '12345'
+  
+  setTimeout(()=>{}, 2000)
+  
+  LoginFun()
+}
 </script>
 <style scoped lang="less">
 #login {

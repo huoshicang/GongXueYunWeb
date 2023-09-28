@@ -8,6 +8,10 @@
           <n-form-item label="用户名" path="userName">
             <n-input type="text" :disabled="Boolean(ResetForm.userName)" v-model:value="ResetForm.userName" placeholder="请输入用户名"/>
           </n-form-item>
+          <n-form-item label="手机号" path="phone">
+            <n-input type="text" show-password-on="click" v-model:value="ResetForm.phone"
+                     placeholder="请手机号"/>
+          </n-form-item>
           <n-form-item label="密码" path="passWord">
             <n-input type="password" show-password-on="click" v-model:value="ResetForm.passWord"
                      placeholder="请输入密码"/>
@@ -41,6 +45,7 @@ const ResetForm = reactive({
   userName: useRoute().query.username,
   passWord: "",
   repeatPassword: "",
+  phone: "",
 })
 
 // 表单校验规则
@@ -58,6 +63,11 @@ const ResetRules = {
   repeatPassword: {
     required: true,
     message: '请重复密码',
+    trigger: ['blur']
+  },
+  phone: {
+    required: true,
+    message: '请手机号',
     trigger: ['blur']
   }
 }

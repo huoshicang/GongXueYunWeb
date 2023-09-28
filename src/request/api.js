@@ -61,4 +61,50 @@ export const delCheck = async (data) => {
   return await MyPost(`/user/delCheck`, data);
 }
 
+// 获取周报
+export const getWeekly = async (data) => {
+  return await MyPost(`/Weekly/data`, data);
+}
+
+// 删除周报
+export const delWeekly = async (data) => {
+  return await MyPost(`/Weekly/del`, data);
+}
+
+// 编辑周报
+export const modifyWeekly = async (data) => {
+  return await MyPost(`/Weekly/modify`, data);
+}
+
+// 添加周报
+export const addWeekly = async (data) => {
+  return await MyPost(`/Weekly/add`, data);
+}
+
+// 获取月报
+export const getMonth = async (data) => {
+  return await MyPost(`/Month/data`, data);
+}
+
+// 删除月报
+export const delMonth = async (data) => {
+  return await MyPost(`/Month/del`, data);
+}
+
+// 编辑月报
+export const modifyMonth = async (data) => {
+  return await MyPost(`/Month/modify`, data);
+}
+
+// 添加月报
+export const addMonth = async (data) => {
+  return await MyPost(`/Month/add`, data);
+}
+
+// 签到任务
+export const checkQuest = async (data) => {
+  return await MyPost(`/quest/check`, data);
+}
+
+
 
