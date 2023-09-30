@@ -16,6 +16,13 @@ const routes = [
         }
       },
       {
+        path: 'My',
+        name: '我的',
+        components: {
+          Cont: () => import(/* webpackChunkName: "index" */ '@/page/My/MyPage.vue'),
+        }
+      },
+      {
         path: 'CheckInUser',
         name: '签到用户',
         components: {

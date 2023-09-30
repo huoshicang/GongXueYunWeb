@@ -2,8 +2,8 @@
   <!--搜索-->
   <a-form :model="Search" layout="inline">
     <a-space>
-      <a-form-item field="username" label="姓名">
-        <a-select allow-clear :style="{width:'150px'}" v-model="Search.username" allow-search>
+      <a-form-item field="username" label="姓名" v-if="pinia.UserData.role !== 'user'">
+        <a-select allow-clear :style="{width:'150px'}" v-model="Search.searchname" allow-search>
           <a-option v-for="(item, index) in props.usernameList"
                     :value="item"
                     :key="index">{{ item }}
@@ -39,11 +39,12 @@ const pinia = useCounterStore()
 const props = defineProps(['usernameList']);
 
 const Search = reactive({
-  "username": "",
-  "name": pinia.UserData.username,
+  "username": pinia.UserData.username,
+  "searchname": "",
   "starttime": "",
   "endtime": "",
 })
+
 
 const emit = defineEmits();
 

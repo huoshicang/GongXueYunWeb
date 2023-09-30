@@ -35,7 +35,21 @@ const options = [
     key: "用户管理",
   },
   {
-    show: pinia.UserData.role === 'user' || pinia.UserData.role === 'admin',
+    type: 'group',
+    show: pinia.UserData.role === 'user',
+    label: () => h(
+      RouterLink,
+      {
+        to: {
+          path: "/My",
+        }
+      },
+      { default: () => "我的" }
+    ),
+    key: "我的",
+  },
+  {
+    show: pinia.UserData.role === 'admin',
     label: () => h(
       RouterLink,
       {
@@ -94,7 +108,7 @@ const showOption = (key) => {
 
 onMounted(() => {
   router.push({
-    path: "/User"
+    path: "/My"
   })
 })
 </script>

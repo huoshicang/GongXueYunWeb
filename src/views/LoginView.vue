@@ -35,7 +35,7 @@
               </n-button>
             </router-link>
             <a-button type="primary" long @click="admin">管理员登录（有30%概率出现密码错误）</a-button>
-            <a-button type="primary" long @click="users" disabled>用户登录（没写完）</a-button>
+            <a-button type="primary" long @click="users">用户登录（没写完）</a-button>
             <a-button type="primary" long @click="reset">去重置密码的</a-button>
             <a-button type="primary" long @click="no">没有签到信息</a-button>
           </n-space>
@@ -251,7 +251,7 @@ const admin = () => {
 
 //用户登录
 const users = () => {
-  LogFrom.login.userName = '管理员'
+  LogFrom.login.userName = '廖彬'
   LogFrom.login.passWord = '123'
   
   setTimeout(()=>{}, 2000)

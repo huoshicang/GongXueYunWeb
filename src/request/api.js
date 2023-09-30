@@ -20,6 +20,11 @@ export const UpLog = async (data) => {
   return await MyGet(`/user/UpLog?username=${data}`);
 }
 
+// 获取用户信息
+export const infoUser = async (data) => {
+  return await MyPost(`/info/user`, data);
+}
+
 // 获取签到
 export const GetInfo = async (data) => {
   return await MyPost(`/user/info`, data);

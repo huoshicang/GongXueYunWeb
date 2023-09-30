@@ -119,8 +119,8 @@ import {useCounterStore} from '@/pinia'
 const pinia = useCounterStore()
 
 const InitSearch = {
-  "username": "",
-  "name": pinia.UserData.username,
+  "username": pinia.UserData.username,
+  "searchname": "",
   "starttime": "",
   "endtime": "",
 }
