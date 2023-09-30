@@ -22,6 +22,20 @@ const pinia = useCounterStore()
 const options = [
   {
     type: 'group',
+    show: pinia.UserData.role === 'user' || pinia.UserData.role === 'admin',
+    label: () => h(
+      RouterLink,
+      {
+        to: {
+          path: "/My",
+        }
+      },
+      { default: () => "我的" }
+    ),
+    key: "我的",
+  },
+  {
+    type: 'group',
     show: pinia.UserData.role === 'admin',
     label: () => h(
       RouterLink,
@@ -33,20 +47,6 @@ const options = [
       { default: () => "用户管理" }
     ),
     key: "用户管理",
-  },
-  {
-    type: 'group',
-    show: pinia.UserData.role === 'user',
-    label: () => h(
-      RouterLink,
-      {
-        to: {
-          path: "/My",
-        }
-      },
-      { default: () => "我的" }
-    ),
-    key: "我的",
   },
   {
     show: pinia.UserData.role === 'admin',

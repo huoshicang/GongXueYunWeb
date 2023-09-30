@@ -4,7 +4,7 @@
       <n-h2>
         <n-text>
           签到信息
-          <n-tag v-if="info.enable === 'true'">
+          <n-tag v-if="props.CheckInfo.enable === 'true'">
             开启
           </n-tag>
           <n-tag v-else>
@@ -14,28 +14,28 @@
       </n-h2>
       <n-space>
         <n-h5>
-          签到地址：{{ info.address }}
+          签到地址：{{ props.CheckInfo.address }}
         </n-h5>
         <a-divider direction="vertical" />
         <n-h5>
-          经纬度：{{ info.longitude }}, {{ info.latitude }}
+          经纬度：{{ props.CheckInfo.longitude }}, {{ props.CheckInfo.latitude }}
         </n-h5>
         <a-divider direction="vertical" />
         <n-h5>
-          签到备注：{{ info.note }}
+          签到备注：{{ props.CheckInfo.note }}
         </n-h5>
       </n-space>
       <n-space>
         <n-h5>
-          签到设备类型：{{ info.type }}
+          签到设备类型：{{ props.CheckInfo.type }}
         </n-h5>
         <a-divider direction="vertical" />
         <n-h5>
-          签到时间：{{ info.check_time }}
+          签到时间：{{ props.CheckInfo.check_time }}
         </n-h5>
         <a-divider direction="vertical" />
         <n-h5>
-          推送token：{{ info.pushKey }}
+          推送token：{{ props.CheckInfo.pushKey }}
         </n-h5>
       </n-space>
     </div>
@@ -43,24 +43,8 @@
 </template>
 <script setup>
 import Box from "@/components/BoxComponents.vue";
-
-const info = {
-  "address": "广州市 · 天河区 · 示例地址3",
-  "area": "天河区",
-  "check_time": "2023-09-20 11:54:41",
-  "city": "广州市",
-  "country": "中国",
-  "enable": "false",
-  "latitude": "89.01",
-  "longitude": "345.67",
-  "name": "廖彬",
-  "note": "示例备注3",
-  "phone": "13579246801",
-  "province": "广州市",
-  "pushKey": "推送Key3",
-  "save_time": "None",
-  "type": "android"
-}
+import {defineProps} from "vue";
+const props = defineProps(['CheckInfo']);
 </script>
 
 <style scoped lang="less">

@@ -20,9 +20,14 @@ export const UpLog = async (data) => {
   return await MyGet(`/user/UpLog?username=${data}`);
 }
 
-// 获取用户信息
+// 获取用户信息 用户
 export const infoUser = async (data) => {
   return await MyPost(`/info/user`, data);
+}
+
+// 获取用户信息 管理员
+export const infoAdmin = async (data) => {
+  return await MyPost(`/info/admin`, data);
 }
 
 // 获取签到

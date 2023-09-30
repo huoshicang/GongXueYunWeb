@@ -1,10 +1,11 @@
 <template>
   <div v-if="flag">
     <n-space>
-      <a-space>
+      <n-space>
         <Info :Personal="Personal"/>
-        <Check :CheckInfo="CheckInfo"/>
-      </a-space>
+        <Sys :SysUserData="SysUserData"/>
+        <Check :GxyUserData="GxyUserData"/>
+      </n-space>
       <n-space>
         <Weekly :WeeklyData="WeeklyData"/>
         <Month :MonthData="MonthData"/>
@@ -15,11 +16,12 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {useCounterStore} from '@/pinia'
-import {infoUser} from "@/request/api";
-import Check from "@/page/My/User/CheckComponents.vue"
-import Info from "@/page/My/User/InfoComponents.vue"
-import Weekly from "@/page/My/User/WeeklyComponents.vue"
-import Month from "@/page/My/User/MonthComponents.vue"
+import {infoAdmin} from "@/request/api";
+import Info from "@/page/My/Admin/InfoComponents.vue";
+import Sys from "@/page/My/Admin/SysComponents.vue";
+import Month from "@/page/My/Admin/MonthComponents.vue";
+import Weekly from "@/page/My/Admin/WeeklyComponents.vue";
+import Check from "@/page/My/Admin/CheckComponents.vue";
 
 
 const pinia = useCounterStore()
@@ -27,7 +29,8 @@ const pinia = useCounterStore()
 const flag = ref(false)
 
 const Personal = ref()
-const CheckInfo = ref()
+const SysUserData = ref()
+const GxyUserData = ref()
 const WeeklyData = ref()
 const MonthData = ref()
 
@@ -35,18 +38,18 @@ const MonthData = ref()
 // 请求数据
 const GetData = () => {
   pinia.handleStart()
-  infoUser({
+  infoAdmin({
     username: pinia.UserData.username
   })
     .then((res) => {
       if (res.code === 200) {
-        // info.value = res.data
         Personal.value = res.data.Personal
-        CheckInfo.value = res.data.Check
+        SysUserData.value = res.data.SysUser
+        GxyUserData.value = res.data.GxyUser
         WeeklyData.value = res.data.Weekly
         MonthData.value = res.data.Month
-
-
+        
+        
         flag.value = true
         pinia.handleFinish()
       } else {
@@ -64,11 +67,9 @@ const GetData = () => {
 onMounted(() => {
   GetData()
 })
-
-
 </script>
 
-<style scoped lang="less">
+<style scoped>
 
 </style>
 

@@ -5,10 +5,10 @@
     </a-affix>
     <a-layout>
       <SiderComponents/>
-      <a-layout style="padding: 0 12px; max-height: 666px">
+      <a-layout style="padding: 0 12px; max-height: 685px">
         <BreadcrumbComponents/>
         <ContentComponents/>
-        <a-layout-footer>Footer</a-layout-footer>
+        <FooterComponents/>
       </a-layout>
     </a-layout>
   </a-layout>
@@ -18,6 +18,7 @@ import HeaderComponents from "@/components/HeaderComponents.vue";
 import SiderComponents from "@/components/SiderComponents.vue";
 import BreadcrumbComponents from "@/components/BreadcrumbComponents.vue";
 import ContentComponents from "@/components/ContentComponents.vue";
+import FooterComponents from "@/components/FooterComponents.vue";
 import {useLoadingBar} from "naive-ui";
 import {useCounterStore} from '@/pinia'
 import {onBeforeMount, onMounted} from "vue";
@@ -75,7 +76,6 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--color-text-1);
-  height: 48px;
+  height: 30px;
 }
 </style>

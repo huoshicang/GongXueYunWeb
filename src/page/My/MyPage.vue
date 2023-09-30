@@ -8,7 +8,7 @@ import {useCounterStore} from '@/pinia'
 const pinia = useCounterStore()
 
 import User from "@/page/My/User/UserComponents.vue";
-import Admin from "@/page/My/AdminComponents.vue";
+import Admin from "@/page/My/Admin/AdminComponents.vue";
 </script>
 <style scoped>
 
