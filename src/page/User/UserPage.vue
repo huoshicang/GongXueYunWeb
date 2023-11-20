@@ -11,10 +11,10 @@
         <a-table-column align="center" :width="290" title="最新登录时间" data-index="update_time"/>
         <a-table-column align="center" fixed="right" :width="100" title="是否有签到信息">
           <template #cell="{ record }">
-            <n-tag type="success" v-if="record.gxy_info === 'true'">
+            <n-tag type="success" v-if="record.gxyInfo === 'true'">
               有
             </n-tag>
-            <n-tag type="error" v-else-if="record.gxy_info === 'false'">
+            <n-tag type="error" v-else-if="record.gxyInfo === 'false'">
               无
             </n-tag>
           </template>
@@ -79,7 +79,7 @@ const InitSearch = {
   "name": pinia.UserData.username,
   "username": "",
   "phone": "",
-  "gxy_info": ""
+  "gxyInfo": "",
 }
 
 const data = ref([]); // 表格数据

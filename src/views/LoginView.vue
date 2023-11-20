@@ -77,6 +77,14 @@ import {useCounterStore} from '@/pinia'
 const pinia = useCounterStore()
 
 onBeforeMount(() => {
+  
+  if (pinia.UserData.token){
+    router.push({
+      path: "/My"
+    })
+    return
+  }
+  
   pinia.disabledRef = true
   pinia.loadingBar = useLoadingBar()
   pinia.handleStart = () => {
@@ -262,31 +270,7 @@ const users = () => {
 
 // 重置密码
 const reset = () => {
-  let list = [
-    '范俊驰',
-    '廖彬',
-    '彭鸿煊',
-    '范俊驰',
-    '史耀杰',
-    '邱博文',
-    '范俊驰',
-    '韦立果',
-    '尹烨霖',
-    '余荣轩',
-    '程君浩',
-    '郭绍齐',
-    '贾越泽',
-    '韦越彬',
-    '叶楷瑞',
-    '覃弘文',
-    '沈明杰',
-    '黄哲瀚',
-    '秦振家',
-    '杨语堂',
-  ]
-  
-  
-  LogFrom.login.userName = list[Math.floor(Math.random() * list.length)]
+  LogFrom.login.userName = '杨语堂'
   LogFrom.login.passWord = '123456'
   
   setTimeout(()=>{}, 2000)
@@ -296,22 +280,8 @@ const reset = () => {
 
 // 没有信息
 const no = () => {
-  let list = [
-    '余荣轩',
-    '程君浩',
-    '郭绍齐',
-    '贾越泽',
-    '韦越彬',
-    '叶楷瑞',
-    '覃弘文',
-    '沈明杰',
-    '黄哲瀚',
-    '秦振家',
-    '杨语堂',
-  ]
   
-  
-  LogFrom.login.userName = list[Math.floor(Math.random() * list.length)]
+  LogFrom.login.userName =  '余荣轩'
   LogFrom.login.passWord = '12345'
   
   setTimeout(()=>{}, 2000)

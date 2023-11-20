@@ -21,7 +21,7 @@
         <a-table-column align="center" :width="130" title="推送token" ellipsis tooltip data-index="pushKey"/>
         <a-table-column align="center" fixed="right" :width="100" title="是否开启签到">
           <template #cell="{ record }">
-            <n-tag type="success" v-if="record.enable">
+            <n-tag type="success" v-if="record.enable = 'true'">
               开启
             </n-tag>
             <n-tag type="error" v-else>
@@ -29,7 +29,7 @@
             </n-tag>
           </template>
         </a-table-column>
-        <a-table-column fixed="right" width="160" align="center" title="操作">
+        <a-table-column fixed="right" :width="160" align="center" title="操作">
           <template #cell="{ record }">
             <a-space>
               <a-button @click="Modify(record)">编辑</a-button>
@@ -253,7 +253,6 @@
           </div>
         </a-col>
       </a-row>
-      
     </a-modal>
     
   </div>

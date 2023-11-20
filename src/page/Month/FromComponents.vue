@@ -14,11 +14,13 @@
         <a-date-picker
           v-model="Search.starttime"
           show-time
+          @clear="Search.starttime = ''"
           format="YYYY-MM-DD HH:mm:ss"/>
       </a-form-item>
       <a-form-item field="gxy_info" label="结束时间">
         <a-date-picker
           v-model="Search.endtime"
+          @clear="Search.endtime = ''"
           show-time
           format="YYYY-MM-DD HH:mm:ss"/>
       </a-form-item>

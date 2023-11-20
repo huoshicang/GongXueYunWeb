@@ -5,7 +5,8 @@ import {Notification} from "@arco-design/web-vue";
 export const useCounterStore = defineStore(
     'counter',
     () => {
-      const selectedKey = ref("用户管理")
+      const selectedKey = ref("我的")
+      const selectedRouter = ref("/My")
 
       /*加载条*/
       const loadingBar = null
@@ -44,6 +45,7 @@ export const useCounterStore = defineStore(
 
       return {
         selectedKey,
+        selectedRouter,
         loadingBar,
         disabledRef,
         handleStart,

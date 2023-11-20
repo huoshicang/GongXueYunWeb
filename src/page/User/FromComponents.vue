@@ -19,7 +19,7 @@
         </a-select>
       </a-form-item>
       <a-form-item field="gxy_info" label="是否有签到信息">
-        <a-select v-model="Search.gxy_info" :style="{width:'100px'}" allow-clear>
+        <a-select v-model="Search.gxyInfo" :style="{width:'100px'}" allow-clear>
           <a-option value="false">无</a-option>
           <a-option value="true">有</a-option>
         </a-select>
@@ -42,7 +42,7 @@ const Search = reactive({
   "name": pinia.UserData.username,
   "username": "",
   "phone": "",
-  "gxy_info": ""
+  "gxyInfo": ""
 })
 
 const emit = defineEmits();

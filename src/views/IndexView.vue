@@ -4,8 +4,10 @@
       <HeaderComponents/>
     </a-affix>
     <a-layout>
-      <SiderComponents/>
-      <a-layout style="padding: 0 12px; max-height: 685px">
+      <a-affix :offsetTop="65">
+        <SiderComponents/>
+      </a-affix>
+      <a-layout style="padding: 0 12px;">
         <BreadcrumbComponents/>
         <ContentComponents/>
         <FooterComponents/>
@@ -53,9 +55,14 @@ onMounted(() => {
 </script>
 <style scoped>
 .layout-demo {
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   background: var(--color-fill-2);
   border: 1px solid var(--color-border);
+}
+
+.layout-demo :deep(.arco-layout-sider) {
+  height: 100%;
 }
 
 .layout-demo :deep(.arco-layout-header) {
@@ -72,7 +79,7 @@ onMounted(() => {
   padding: 12px;
 }
 
-.layout-demo :deep(.arco-layout-footer){
+.layout-demo :deep(.arco-layout-footer) {
   display: flex;
   justify-content: center;
   align-items: center;
